@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <title>Simple setInterval clock</title>
+  <style>
+    p {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="clock"></p>
+  <p id='timer'></p>
+  <button id=start>
+    start
+  </button>
+  <button id=reset>
+    reset
+  </button>
+  <button id=stop>
+    stop
+  </button>
+  <script>
+    var intervalID = false;
+    // let startDate = new Date();
+    var startTime;
+    var totalTime = 0;
+    var elapsed;
+    // alert(startTime);
+    function displayTime() {
+      let date = new Date();
+      let time = date.toLocaleTimeString();
+      document.querySelector('.clock').textContent = time;
+    }
+    function startPage() {
+      buttons[0].onclick = start;
+      buttons[1].onclick = resetTimer;
+      buttons[2].onclick = stopTimer;
+    }
+    function start() {
+      if (intervalID == false) {
+        startTime = Date.now();
+        intervalID = setInterval(startTimer, 100);
+      }
+    }
+    function startTimer() {
+
+      let currTime = Date.now();
+      elapsed = (currTime - startTime) / 1000;
+      var min = ((elapsed + totalTime)/60).toFixed(1);
+      document.getElementById('timer').textContent = min+':'+((elapsed + totalTime)%60).toFixed(0);
+    }
+    function resetTimer() {
+      // if (intervalID == false) {
+        stopTimer();
+        intervalID = false;
+        document.getElementById('timer').textContent = '';
+        totalTime = 0;
+      // }
+    }
+    function stopTimer() {
+      // alert('hi');
+      if (intervalID != false) {
+        clearInterval(intervalID);
+      }
+      intervalID = false;
+      totalTime += elapsed;
+      // alert(intervalID);
+    }
+    displayTime();
+    const createClock = setInterval(displayTime, 1000);
+    const buttons = document.querySelectorAll('button');
+    startPage();
+  </script>
+</body>
+
+</html>
