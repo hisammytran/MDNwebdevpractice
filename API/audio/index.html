@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wood Saw</title>
+</head>
+
+<body>
+    <audio src="sawing-wood-daniel_simon.mp3"></audio>
+    <button class="paused">Play</button>
+    <br>
+    <input type="range" min="0" max="1" step=".01" value="1" class="volume">
+    <script>
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const audioElt = document.querySelector('audio');
+        const playBtn = document.querySelector('button');
+        const volumeSlider = document.querySelector('input');
+
+        const audioSource = audioCtx.createMediaElementSource(audioElt);
+
+        playBtn.addEventListener('click', function () {
+            if (audioCtx.state = 'suspended') {
+                audioCtx.resume();
+            }
+            if (this.getAttribute('class') === 'paused') {
+                audioElt.play();
+                this.setAttribute('class', 'playing');
+                this.textContent = 'Pause';
+            } else if (this.getAttribute('class') === 'playing') {
+                audioElt.pause();
+                this.setAttribute('class', 'paused');
+                this.textContent = 'Play';
+            }
+        });
+
+        audioElt.addEventListener('ended', function () {
+            playBtn.setAttribute('class', 'paused');
+            playBtn.textContent = 'Play';
+        });
+
+        const gainNode = audioCtx.createGain();
+        volumeSlider.addEventListener('input',function(){
+            gainNode.gain.value = this.value;
+        })
+
+        audioSource.connect(gainNode).connect(audioCtx.destination);
+
+    </script>
+
+
+</body>
+
+</html>
